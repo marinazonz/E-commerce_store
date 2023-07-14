@@ -1,19 +1,30 @@
 "use client";
 
 import { Product } from "@/types";
+import { MouseEventHandler } from "react";
 import Image from "next/image";
 import { Expand, ShoppingCart } from "lucide-react";
 
 import IconButton from "./icon-button";
 import Currency from "./currency";
+import { useRouter } from "next/navigation";
 
 interface ProductCard {
     data: Product;
 }
 
 const ProductCard: React.FC<ProductCard> = ({ data }) => {
+    const router = useRouter();
+
+    const handleClick = () => {
+        router.push(`/product/${data?.id}`);
+    };
+
     return (
-        <div className='bg-white group cursor-pointer rounded-xl border p-3 space-y-4'>
+        <div
+            onClick={handleClick}
+            className='bg-white group cursor-pointer rounded-xl border p-3 space-y-4'
+        >
             <div className='aspect-square rounded-xl bg-gray-100 relative'>
                 <Image
                     src={data?.images?.[0]?.url}
@@ -42,8 +53,8 @@ const ProductCard: React.FC<ProductCard> = ({ data }) => {
                 </div>
             </div>
             <div>
-                <p className='font-semibold text-lg'>{data.name}</p>
-                <p className='text-sm text-gray-500'>{data.category?.name}</p>
+                <p className='font-semibold text-lg'>{data?.name}</p>
+                <p className='text-sm text-gray-500'>{data?.category?.name}</p>
             </div>
             <div className='flex items-center justify-between'>
                 <Currency value={data?.price} />
